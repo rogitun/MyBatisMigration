@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css"/>
+    <!-- Mumble UI -->
+    <link th:href="@{/css/uikit/styles/uikit.css}" rel="stylesheet"/>
+    <!-- Dev Search UI -->
+    <link th:href="@{/css/styles/app.css}" rel="stylesheet"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>게시글 상세</title>
+
+    <meta property="og:type" th:content="website">
+    <meta property="og:title" th:content="${post.title}">
+    <meta property="og:description" th:content="${post.content}">
+<!--    <meta property="og:image" th:content="'https://' + ${#httpServletRequest.getServerName} + '/image/jm.jpg'">-->
+<!--    <meta property="og:image" content="https://cdn.pixabay.com/photo/2022/09/07/10/01/landscape-7438429_960_720.jpg">-->
+    <meta property="og:image" content="/images/jm.jpg">
+    <meta property="og:url" th:content="${#httpServletRequest.requestURL}">
+    <meta property="og:site_name" th:content="|김민규의 **세상|">
+    <meta property="og:image:height"  content="400" />
+    <meta property="og:image:width" content="800" />
+</head>
+
+<body>
+<!-- Header Section -->
+<header class="header" th:replace="main/nav :: nav"></header>
+
+<!-- Main Section -->
+<main class="singleProject my-md">
+    <div class="container">
+        <div class="layout">
+            <div class="column column--1of3">
+                <h3 class="singleProject__subtitle">해시태그</h3>
+                <div class="singleProject__toolStack">
+            <span class="tag tag--pill tag--sub tag--lg" th:each="h : ${hashtags}">
+              <small th:text="|#${h}|">해쉬태그1</small>
+            </span>
+                    <!--            <span class="tag tag&#45;&#45;pill tag&#45;&#45;sub tag&#45;&#45;lg">-->
+                    <!--              <small>해쉬태그2</small>-->
+                    <!--            </span>-->
+                </div>
+                <a class="tag tag--pill tag--main settings__btn" th:href="@{/post/{id}/edit(id=${post.postId})}"><i
+                        class="im im-edit"></i> 수정하기</a>
+                <a class="tag tag--pill tag--main settings__btn" th:onclick="del([[${post.postId}]])"><i
+                        class="im im-x-mark-circle-o"></i>삭제하기</a>
+            </div>
+
+            <div class="column column--2of3">
+                <h2 class="singleProject__title" th:text="${post.title}">제목</h2>
+                <a href="profile.html" class="singleProject__developer" th:text="|by ${post.writer}|">by 작성자</a>
+                <h3 class="singleProject__subtitle" th:text="${post.created}">본문 : </h3>
+                <div class="singleProject__info" th:text="${post.content}"></div>
+
+
+                <div class="comments">
+                    <span>
+                    <button class="tag tag--pill tag--main settings__btn" th:onclick="likePost([[${post.postId}]])"
+                            type="button">좋아요!</button>
+                    <button class="tag tag--pill tag--main settings__btn" th:onclick="disLikePost([[${post.postId}]])"
+                            type="button">싫어요!</button>
+                </span>
+                    <br>
+
+                    <h3 class="singleProject__subtitle">댓글</h3>
+                    <h5 class="project--rating">
+                        <span th:text="|좋아요 : ${post.likes} From (${post.viewed})|"></span>
+                    </h5>
+                    <hr>
+                    <form class="form" action="#" method="POST">
+                        <!-- Textarea -->
+                        <div class="form__field">
+                <span><input type="text" name="writer" id="writer" placeholder="작성자"/>
+                      <input type="password" name="password" id="password" placeholder="비밀번호">
+                </span>
+                            <label for="content">Comments: </label>
+                            <textarea class="input input--textarea" name="message" id="content"
+                                      placeholder="댓글을 남겨주세요"></textarea>
+                        </div>
+                        <input class="btn btn--sub btn--lg" type="button" th:onclick="addComment([[${post.postId}]])"
+                               value="작성"/>
+                    </form>
+                    <br>
+                    <hr>
+                    <div class="commentList" id="commentList">
+                        <div class="comment" th:each="c : ${comments}">
+                            <div class="comment__details">
+                                <a class="comment__author" th:text="${c.writer}">댓글 작성자</a>
+                                <span th:text="| on (${c.created})|"></span>
+                                <a class="tag tag--pill tag--main settings__btn"
+                                   th:onclick="delComment([[${c.id}]])">삭제</a>
+                                <!--                  <i class="im im-x-mark-circle-o"></i>-->
+                                <p class="comment__info" th:text="${c.content}" th:id="|content_${c.id}|">
+                                    댓글 본문 영역
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <a th:if="${comments.hasContent()}" th:onclick="showMoreCmt([[${post.postId}]])"-->
+<!--                       th:text="|더 보기|"></a>     -->
+                    <a  th:onclick="showMoreCmt([[${post.postId}]])"
+                       th:text="|더 보기|"></a>
+                    <input id="nextPage" value="2" hidden/>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+</body>
+<script th:src="@{/js/postManage.js}"></script>
+<script th:src="@{/js/commentManage.js}"></script>
+</script>
+</html>

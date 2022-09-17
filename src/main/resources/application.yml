@@ -1,0 +1,57 @@
+database: ntsdb
+
+spring:
+  profiles:
+    active: dev
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: none
+
+
+  datasource:
+    #initialization-mode: always
+    #schema: classpath:db/ntsdb/schema.sql
+    password: ghkd0045
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/nts?serverTimezone=Asia/Seoul
+
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    nts:
+      assignment:
+        repository:
+          mybatis: trace
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: ERROR
+
+thymeleaf:
+  prefix=classpath: templates/
+  suffix: .html
+  check-template-location: true
+  cache: false
+  mvc:
+    static-path-pattern: "/static/**"
+
+#MyBatis
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: nts.assignment.domain
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+
+#Secret:
+#  key: "Hansel970901"

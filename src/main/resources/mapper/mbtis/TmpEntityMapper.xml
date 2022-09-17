@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nts.assignment.repository.mybatis.TmpEntityMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="tmpId">
+        insert into tmp_entity(tmp_name,tmp_age)
+        values (#{tmpName},#{tmpAge})
+    </insert>
+
+    <update id="update">
+        update tmp_entity
+        set tmp_name=#{updateDto.tmpName},
+            tmp_age=#{updateDto.tmpAge}
+        where tmp_id=#{id}
+    </update>
+
+    <select id="findById" resultType="tempEntity">
+        select tmp_id, tmp_name, tmp_age
+        from tmp_entity
+        where tmp_id = #{id}
+    </select>
+
+    <select id="findAll" resultType="tempEntity">
+        select tmp_id, tmp_name, tmp_age
+        from tmp_entity
+        <where>
+            <if test="tmpName != null and tmpName != ''">
+                and tmp_name like concat('%', #{tmpName}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

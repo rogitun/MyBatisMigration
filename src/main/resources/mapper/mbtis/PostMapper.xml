@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="nts.assignment.repository.mybatis.PostMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="post_id" keyProperty="postId">
+        insert into post(title, content, password, writer,created,modified)
+        values (#{title},#{content},#{password},#{writer},DEFAULT,DEFAULT)
+    </insert>
+
+</mapper>
